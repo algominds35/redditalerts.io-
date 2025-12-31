@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Brand Monitor - Know What Reddit Says About Your Brand</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a2b4a 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #a8c5ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #b8c8e0;
+            margin-bottom: 48px;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto 16px;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 16px 20px;
+            font-size: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .email-input::placeholder {
+            color: #8797b0;
+        }
+
+        .btn-primary {
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: #ffffff;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4);
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(79, 70, 229, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .small-text {
+            color: #8797b0;
+            font-size: 14px;
+        }
+
+        .success-message {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-top: 24px;
+            display: none;
+            animation: slideDown 0.4s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Styling */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-size: 42px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 64px;
+            line-height: 1.2;
+        }
+
+        /* Problem Section */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .problem-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .problem-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .problem-icon {
+            font-size: 48px;
+            margin-bottom: 24px;
+        }
+
+        .problem-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ff6b6b;
+            line-height: 1.4;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #b8c8e0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Pricing Section */
+        .pricing-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 64px;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            padding: 48px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .price-header {
+            margin-bottom: 32px;
+        }
+
+        .price {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .price-original {
+            font-size: 28px;
+            color: #8797b0;
+            text-decoration: line-through;
+            margin-right: 12px;
+        }
+
+        .price-badge {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        .features-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b8c8e0;
+            font-size: 15px;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            color: #4ade80;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Footer */
+        footer {
+            padding: 80px 0 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-form {
+            margin-bottom: 48px;
+        }
+
+        .footer-text {
+            color: #8797b0;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .email-form {
+                flex-direction: column;
+            }
+
+            .btn-primary {
+                width: 100%;
+            }
+
+            .problem-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card {
+                padding: 32px;
+            }
+
+            .price {
+                font-size: 42px;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 26px;
+                margin-bottom: 40px;
+            }
+
+            .problem-card,
+            .feature-card {
+                padding: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Know What Reddit Says About Your Brand – Before It Goes Viral</h1>
+            <p>Real-time monitoring, sentiment analysis, and instant alerts when your brand is mentioned on Reddit</p>
+            
+            <form class="email-form" id="heroForm">
+                <input 
+                    type="email" 
+                    class="email-input" 
+                    placeholder="Enter your email" 
+                    required
+                    id="heroEmail"
+                >
+                <button type="submit" class="btn-primary">Join Waitlist</button>
+            </form>
+            
+            <p class="small-text">Join 50+ brands on the waitlist. Launching February 2025.</p>
+            
+            <div class="success-message" id="heroSuccess">
+                Thanks! We'll email you when we launch. 🚀
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem">
+        <div class="container">
+            <h2 class="section-title">Reddit Can Make or Break Your Brand Overnight</h2>
+            
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">📉</div>
+                    <h3>One viral negative thread tanks your sales</h3>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon">💬</div>
+                    <h3>You miss opportunities when customers ask for recommendations</h3>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon">⚡</div>
+                    <h3>By the time it hits Twitter, the damage is done</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Everything You Need to Stay Ahead</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Real-Time Alerts</h3>
+                    <p>Get notified instantly when your brand is mentioned across Reddit's thousands of communities.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Sentiment Analysis</h3>
+                    <p>Know if conversations are positive, negative, or neutral with AI-powered sentiment detection.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Competitor Tracking</h3>
+                    <p>See how you compare to competitors and identify gaps in the market conversation.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Subreddit Insights</h3>
+                    <p>Understand which communities are talking about you and where your audience hangs out.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            
+            <div class="pricing-container">
+                <div class="pricing-card">
+                    <div class="price-header">
+                        <div class="price-badge">Early bird pricing - 50% off for first 100 customers</div>
+                        <div class="price">
+                            <span class="price-original">$149</span>$79<span style="font-size: 24px; font-weight: 400; color: #b8c8e0;">/month</span>
+                        </div>
+                    </div>
+                    
+                    <ul class="features-list">
+                        <li>Unlimited brand mentions</li>
+                        <li>Real-time alerts</li>
+                        <li>Sentiment analysis</li>
+                        <li>Email + Slack notifications</li>
+                    </ul>
+                    
+                    <button class="btn-primary" onclick="scrollToHero()" style="width: 100%;">Join Waitlist</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-form">
+                <form class="email-form" id="footerForm">
+                    <input 
+                        type="email" 
+                        class="email-input" 
+                        placeholder="Enter your email" 
+                        required
+                        id="footerEmail"
+                    >
+                    <button type="submit" class="btn-primary">Join Waitlist</button>
+                </form>
+                
+                <div class="success-message" id="footerSuccess">
+                    Thanks! We'll email you when we launch. 🚀
+                </div>
+            </div>
+            
+            <p class="footer-text">© 2025 RedditBrandMonitor. Made for brands who care about their reputation.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Supabase Configuration
+        // Replace these with your actual Supabase credentials
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        
+        let supabase = null;
+        
+        // Initialize Supabase if credentials are provided
+        if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
+        // Email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Function to validate email
+        function isValidEmail(email) {
+            return emailRegex.test(email);
+        }
+
+        // Function to save email to Supabase
+        async function saveEmailToSupabase(email) {
+            if (!supabase) {
+                console.warn('Supabase not configured, saving to localStorage only');
+                saveEmailToLocalStorage(email);
+                return true;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .from('waitlist')
+                    .insert([
+                        { 
+                            email: email,
+                            created_at: new Date().toISOString()
+                        }
+                    ]);
+
+                if (error) {
+                    // If duplicate email (unique constraint violation)
+                    if (error.code === '23505') {
+                        console.log('Email already exists in waitlist');
+                        return true;
+                    }
+                    throw error;
+                }
+
+                console.log('Email saved to Supabase:', email);
+                
+                // Also save to localStorage as backup
+                saveEmailToLocalStorage(email);
+                
+                return true;
+            } catch (error) {
+                console.error('Error saving to Supabase:', error);
+                
+                // Fallback to localStorage
+                saveEmailToLocalStorage(email);
+                return true;
+            }
+        }
+
+        // Function to save email to localStorage (fallback)
+        function saveEmailToLocalStorage(email) {
+            let emails = JSON.parse(localStorage.getItem('waitlistEmails') || '[]');
+            
+            if (!emails.includes(email)) {
+                emails.push(email);
+                localStorage.setItem('waitlistEmails', JSON.stringify(emails));
+                console.log('Email saved to localStorage:', email);
+            }
+        }
+
+        // Function to show success message
+        function showSuccess(formId) {
+            const successElement = document.getElementById(formId + 'Success');
+            successElement.classList.add('show');
+            
+            setTimeout(() => {
+                successElement.classList.remove('show');
+            }, 5000);
+        }
+
+        // Function to show error message
+        function showError(message) {
+            alert(message);
+        }
+
+        // Function to handle form submission
+        async function handleFormSubmit(event, formId, emailId) {
+            event.preventDefault();
+            
+            const emailInput = document.getElementById(emailId);
+            const email = emailInput.value.trim();
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            
+            if (!isValidEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+            
+            // Disable button and show loading state
+            submitButton.disabled = true;
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Joining...';
+            
+            try {
+                // Save email to Supabase
+                await saveEmailToSupabase(email);
+                
+                // Show success message
+                showSuccess(formId);
+                
+                // Clear the form
+                emailInput.value = '';
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Something went wrong. Please try again.');
+            } finally {
+                // Re-enable button
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
+        }
+
+        // Hero form submission
+        document.getElementById('heroForm').addEventListener('submit', function(e) {
+            handleFormSubmit(e, 'hero', 'heroEmail');
+        });
+
+        // Footer form submission
+        document.getElementById('footerForm').addEventListener('submit', function(e) {
+            handleFormSubmit(e, 'footer', 'footerEmail');
+        });
+
+        // Scroll to hero function
+        function scrollToHero() {
+            document.querySelector('.hero').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Smooth scroll for all internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
